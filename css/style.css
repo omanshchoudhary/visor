@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: #e6edf3; 
+}
+
+.header {
+    height: 60px;
+    background-color: #161b22;
+}
+.main-layout {
+    display: flex;
+}   
+html, body {
+    height: 100%;
+}
+
+.main-layout {
+    height: calc(100vh - 60px);
+}
+.sidebar {
+    width: 220px;
+    background-color:#2F4F4F;
+}
+
+.content {
+    flex: 1;
+    background-color: #0d1117; 
+}
