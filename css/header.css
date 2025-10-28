@@ -1,0 +1,15 @@
+.header {
+    height: 60px;
+    background-color: #fefefe;
+    display: flex;
+}
+
+.header svg {
+    width: 24px;
+    height: 24px;
+}
+
+.header svg path {
+    fill: #4a5568;
+}
+
