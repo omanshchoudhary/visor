@@ -2,6 +2,8 @@
     height: 60px;
     background-color: #fefefe;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .header svg {
