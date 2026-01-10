@@ -15,3 +15,9 @@
     fill: #4a5568;
 }
 
+.header-utility {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 16px;
+}
