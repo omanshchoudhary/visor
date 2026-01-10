@@ -1,23 +1,78 @@
 .header {
     height: 60px;
-    background-color: #fefefe;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 24px;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.header-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+    letter-spacing: -0.5px;
+}
+
+.header input[type="text"] {
+    width: 320px;
+    padding: 10px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.header input[type="text"]:focus {
+    border-color: #6366f1;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.header input[type="text"]::placeholder {
+    color: #9ca3af;
 }
 
 .header svg {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
 }
 
 .header svg path {
-    fill: #4a5568;
+    fill: #6b7280;
+    transition: fill 0.2s ease;
 }
 
 .header-utility {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding-right: 16px;
+    gap: 4px;
+}
+
+.utility-btn {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.utility-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.utility-btn:hover svg path {
+    fill: #1f2937;
+}
+
+.utility-btn:active {
+    transform: scale(0.95);
 }
