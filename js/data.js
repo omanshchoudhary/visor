@@ -1,1 +1,1 @@
-fetch(data/data.json)
+fetch('../')
