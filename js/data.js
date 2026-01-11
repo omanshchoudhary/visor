@@ -5,14 +5,13 @@ async function localDashboard() {
 
   const response = await fetch("data/data.json");
   const data = await response.json();
-  console.log(data);
+  
   data.dailyStats.forEach((stat) => {
     totalRevenue += stat.revenue;
     totalSignups += stat.signups;
     totalConversion += stat.conversionRate;
   });
   totalConversion /= data.dailyStats.length;
-  console.log(totalConversion);
 
   const revenueElement = document.getElementById("total-revenue");
   revenueElement.innerHTML = `${new Intl.NumberFormat("en-US", {
