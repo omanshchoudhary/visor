@@ -13,6 +13,15 @@ async function localDashboard() {
     }); 
     totalConversion/=data.dailyStats.length 
     console.log(totalConversion) 
+
+    const revenueElement = document.getElementById('total-revenue')
+    revenueElement.innerHTML = `${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalRevenue)}`
+
+    const signupsElement = document.getElementById('total-signups')
+    signupsElement.innerHTML=`${totalSignups.toLocaleString()}`
+
+    const conversionRateElement = document.getElementById('conversion-rate')
+    conversionRateElement.innerHTML = `${totalConversion.toFixed(1)} %`
 }
 
 localDashboard()
