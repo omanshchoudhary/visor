@@ -107,6 +107,26 @@ async function localDashboard() {
       },
     },
   });
+
+  const tableBodyElement = document.getElementById("campaign-rows");
+  data.topCampaigns.forEach((campaign) => {
+    // Determine color based on status text
+    const statusClass =
+      campaign.status === "Active" ? "status-active" : "status-ended";
+
+    // Create the HTML row
+    const rowHTML = `
+        <tr>
+            <td><span style="font-weight: 500;">${campaign.campaign}</span></td>
+            <td>${campaign.source}</td>
+            <td>${campaign.roi}</td>
+            <td><span class="status-badge ${statusClass}">${campaign.status}</span></td>
+        </tr>
+    `;
+
+    // Add to the table
+    tableBodyElement.insertAdjacentHTML("beforeend", rowHTML);
+  });
 }
 
 localDashboard();
