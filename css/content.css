@@ -121,7 +121,7 @@
 }
 
 .coming-soon h1 {
-    font-size: 48px;
+    font-size: clamp(24px, 6vw, 48px);
     font-weight: 700;
     color: #1e293b;
     margin-bottom: 12px;
@@ -129,13 +129,13 @@
 }
 
 .coming-soon p {
-    font-size: 18px;
+    font-size: clamp(14px, 2.5vw, 18px);
     color: #6b7280;
 }
 
-.dashboard-table{
+.dashboard-table {
     width: 100%;
-    border-collapse:collapse;
+    border-collapse: collapse;
     font-size: 14px;
 }
 
@@ -147,7 +147,7 @@
     border-bottom: 1px solid #e2e8f0;
 }
 
-.dashboard-table td{
+.dashboard-table td {
     padding: 16px;
     border-bottom: 1px solid #f1f5f9;
     color: #1e293b;
@@ -173,4 +173,15 @@
 .status-ended {
     background-color: #f1f5f9;
     color: #64748b;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.table-container {
+    overflow-x: auto;
+    width: 100%;
 }
