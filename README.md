@@ -237,13 +237,6 @@ We welcome contributions! Here's how you can help:
 
 ---
 
-## Project Stats
-
-![GitHub stars](https://img.shields.io/github/stars/yourusername/visor?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/visor?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/yourusername/visor?style=social)
-
----
 
 <div align="center">
 
