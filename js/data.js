@@ -266,7 +266,7 @@ function downloadCSV(data) {
 }
 
 function initSettings() {
-  const form = getElementById('setingsForm')
+  const form = document.getElementById('settingsForm')
   if (!form) return;
   const savedName = localStorage.getItem('visor_name');
   const savedEmail = localStorage.getItem('visor_email');
@@ -276,7 +276,7 @@ function initSettings() {
   if (savedEmail) document.getElementById('profileEmail').value = savedEmail;
   if (savedBio) document.getElementById('profileBio').value = savedBio;
   form.addEventListener('submit', (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const name = document.getElementById('profileName').value;
     const email = document.getElementById('profileEmail').value;
@@ -291,3 +291,47 @@ function initSettings() {
 }
 
 initSettings();
+
+
+function initGlobalSearch() {
+  const searchInput = document.getElementById('searchInput')
+
+  if (!searchInput) return;
+
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key == 'Enter') {
+      const term = searchInput.value.toLowerCase().trim();
+      if (term === 'users' || term === 'go users') window.location.href = 'users.html';
+      if (term === 'sales' || term === 'go sales') window.location.href = 'sales.html';
+      if (term === 'dashboard' || term === 'home') window.location.href = 'index.html';
+      if (term === 'settings' || term === 'profile') window.location.href = 'settings.html';
+    }
+  })
+
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    const path = window.location.pathname;
+
+    // 1. Dashboard Logic (Filter Campaigns)
+    if (path.includes('index.html') || path === '/') {
+      const rows = document.querySelectorAll('#campaign-rows tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    // 2. Sales Logic (Filter Transactions)
+    if (path.includes('sales.html')) {
+      const rows = document.querySelectorAll('#sales-rows tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+  });
+}
+
+initGlobalSearch();
+
+
