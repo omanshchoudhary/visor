@@ -141,11 +141,11 @@ if (document.getElementById('revenueChart')) {
 }
 
 
-function loadUsers() {
+function renderUsers(usersToRender) {
   const tableBodyElement = document.getElementById('user-rows')
   if (!tableBodyElement) return;
   tableBodyElement.innerHTML = '';
-  users.forEach(user => {
+  usersToRender.forEach(user => {
     const statusColor = user.status === 'Active' ? 'status-active' : 'status-ended'
     const rowHTML = `
       <tr>
@@ -159,5 +159,27 @@ function loadUsers() {
     tableBodyElement.insertAdjacentHTML('beforeend', rowHTML);
   })
 }
+if (document.getElementById('user-rows')) {
+  renderUsers(users);
+  const searchInputElement = document.getElementById('searchInput')
+  const statusFilterElement = document.getElementById('statusFilter');
 
-loadUsers();
+  if (searchInputElement && statusFilterElement) {
+
+    function filterData() {
+      const query = searchInput.value.toLowerCase();
+      const status = statusFilter.value;
+
+      const filtered = users.filter(user => {
+        // Check matches
+        const matchesSearch = user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query);
+        const matchesStatus = status === 'All' || user.status === status;
+
+        return matchesSearch && matchesStatus;
+      });
+      renderUsers(filtered);
+    }
+  }
+  searchInput.addEventListener('input', filterData);
+  statusFilter.addEventListener('change', filterData);
+}
