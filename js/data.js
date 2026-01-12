@@ -183,3 +183,55 @@ if (document.getElementById('user-rows')) {
   searchInput.addEventListener('input', filterData);
   statusFilter.addEventListener('change', filterData);
 }
+
+async function loadSales() {
+  const tableBody = document.getElementById('sales-rows');
+  const chartCanvas = document.getElementById('salesChart');
+  const result = await fetch('data/data.json')
+  const data = await result.json();
+  const dates = data.dailyStats.map(d => d.date);
+  const conversions = data.dailyStats.map(d => d.conversionRate);
+  new Chart(chartCanvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [{
+        label: 'Conversion Rate (%)',
+        data: conversions,
+        borderColor: '#10b981', // Green color
+        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 8, maxRotation: 0 } },
+        y: { beginAtZero: true, grid: { borderDash: [5, 5] } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  data.dailyStats.forEach(stat => {
+    const rowHTML = `
+        <tr>
+            <td style="color: #64748b;">${stat.date}</td>
+            <td style="font-weight: 500;">
+                ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(stat.revenue)}
+            </td>
+            <td>${stat.signups.toLocaleString()}</td>
+            <td>
+                <span class="status-badge" style="background: ${stat.conversionRate > 3 ? '#dcfce7' : '#f1f5f9'}; color: ${stat.conversionRate > 3 ? '#166534' : '#64748b'};">
+                    ${stat.conversionRate}%
+                </span>
+            </td>
+        </tr>
+    `;
+    tableBody.insertAdjacentHTML('beforeend', rowHTML);
+  });
+}
+
+loadSales()
