@@ -312,7 +312,7 @@ function initGlobalSearch() {
     const query = searchInput.value.toLowerCase();
     const path = window.location.pathname;
 
-    // 1. Dashboard Logic (Filter Campaigns)
+    
     if (path.includes('index.html') || path === '/') {
       const rows = document.querySelectorAll('#campaign-rows tr');
       rows.forEach(row => {
@@ -321,7 +321,7 @@ function initGlobalSearch() {
       });
     }
 
-    // 2. Sales Logic (Filter Transactions)
+    
     if (path.includes('sales.html')) {
       const rows = document.querySelectorAll('#sales-rows tr');
       rows.forEach(row => {
