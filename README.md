@@ -7,6 +7,8 @@ Built without frameworks to showcase clean architecture and performance-first UI
 ![Status](https://img.shields.io/badge/Status-Active-success.svg)
 ![Version](https://img.shields.io/badge/Version-1.0-blue.svg)
 
+**[Live Demo](https://your-vercel-url.vercel.app)** • **[Report Bug](https://github.com/omanshchoudhary/visor/issues)** • **[Request Feature](https://github.com/omanshchoudhary/visor/issues)**
+
 ---
 
 ## Features
@@ -24,10 +26,15 @@ Built without frameworks to showcase clean architecture and performance-first UI
 - Product breakdown with doughnut charts
 - Campaign performance tables
 
-### Current Pages
+### Completed Pages
 
-**Dashboard** — Live  
-Other pages — Planned for v2.0
+| Page | Status | Features |
+|------|--------|----------|
+| **Dashboard** | ✅ Live | Revenue stats, charts, campaign table |
+| **Sales** | ✅ Live | Conversion trends, transaction history, CSV export |
+| **Users** | ✅ Live | User list, role management, status filtering |
+| **Settings** | ✅ Live | Profile management, form validation |
+| **Help** | ✅ Live | FAQ section, expandable questions |
 
 ---
 
@@ -43,9 +50,14 @@ Other pages — Planned for v2.0
 # Clone
 git clone https://github.com/omanshchoudhary/visor.git
 
+# Navigate to directory
+cd visor
+
 # Run local server
 npx http-server
 ```
+
+Then visit `http://localhost:8080` in your browser.
 
 ---
 
@@ -55,10 +67,10 @@ npx http-server
 visor/
 │
 ├── index.html              # Main dashboard
-├── users.html              # Users page (coming soon)
-├── sales.html              # Sales page (coming soon)
-├── settings.html           # Settings page (coming soon)
-├── help.html               # Help page (coming soon)
+├── sales.html              # Sales analytics & export
+├── users.html              # User management
+├── settings.html           # User settings & profile
+├── help.html               # FAQ & support
 │
 ├── css/
 │   ├── index.css          # Base styles
@@ -66,23 +78,50 @@ visor/
 │   ├── sidebar.css        # Navigation sidebar
 │   ├── content.css        # Main content area
 │   ├── theme.css          # Theme variables & dark mode
-│   └── responsive.css     # Media queries
+│   ├── responsive.css     # Media queries
+│   ├── help.css           # Help page styles
+│   └── settings.css       # Settings page styles
 │
 ├── js/
-│   ├── main.js            # Core application logic
 │   ├── data.js            # Data fetching & processing
-│   ├── charts.js          # Chart configurations
-│   ├── filters.js         # Data filtering utilities
 │   └── theme.js           # Theme toggle functionality
 │
 ├── data/
-│   └── data.json          # Dashboard data
+│   └── data.json          # Dashboard data (90 days)
 │
-├── assets/
-│   └── icons/             # SVG icons
-│
-└── README.md              # You are here!
+└── assets/
+    └── icons/             # SVG icons
 ```
+
+---
+
+## Key Features Breakdown
+
+### Dashboard
+- **3 Key Metrics**: Total Revenue, Sign-ups, Conversion Rate
+- **Revenue Chart**: 90-day performance visualization
+- **Product Breakdown**: Doughnut chart with plan distribution
+- **Top Campaigns**: Table with ROI and status badges
+
+### Sales Page
+- **Conversion Rate Trend**: Line chart visualization
+- **Daily Transactions**: Complete transaction history
+- **CSV Export**: Download data for external analysis
+
+### Users Page
+- **User List**: Name, email, role, status, last active
+- **Status Filter**: Filter by Active/Inactive users
+- **Role Display**: Admin, Manager, User differentiation
+
+### Settings Page
+- **Profile Management**: Name, email, bio editing
+- **Form Validation**: Client-side validation
+- **Save Functionality**: Persistent settings
+
+### Help Page
+- **FAQ Section**: Expandable/collapsible questions
+- **Search Integration**: Quick answer lookup
+- **Detailed Answers**: Code examples and explanations
 
 ---
 
@@ -108,46 +147,6 @@ Error:      #ef4444  /* Red */
 ```
 xs: 4px   |  sm: 8px   |  md: 16px  |  lg: 24px  |  xl: 32px
 ```
-
----
-
-## Upcoming Features
-
-### Version 2.0 — Planned
-
-#### User Management
-- [ ] User list with search & filters
-- [ ] User profiles with activity history
-- [ ] Role-based access control
-- [ ] Bulk user operations
-
-#### Sales Analytics
-- [ ] Sales funnel visualization
-- [ ] Product performance metrics
-- [ ] Revenue forecasting
-- [ ] Export reports (PDF/CSV)
-
-#### Settings & Customization
-- [ ] Dashboard layout editor
-- [ ] Custom color themes
-- [ ] Notification preferences
-- [ ] Data export settings
-
-### Version 3.0 — Future ideas
-
-#### Advanced Features
-- [ ] Real-time data streaming
-- [ ] AI-powered insights
-- [ ] Custom widget builder
-- [ ] Multi-language support
-- [ ] API integration tools
-- [ ] Collaborative features
-
-#### Performance
-- [ ] PWA support (offline mode)
-- [ ] Advanced caching
-- [ ] Lazy loading
-- [ ] Performance monitoring
 
 ---
 
@@ -199,9 +198,50 @@ Visor includes a built-in dark mode that:
 
 ---
 
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+---
+
+## Development
+
+### Local Development
+```bash
+# Start a local server
+npx http-server
+
+# Or use Python
+python -m http.server 8080
+```
+
+### Project Principles
+- **No frameworks**: Pure vanilla JavaScript
+- **Performance-first**: Minimal dependencies
+- **Accessibility**: ARIA labels and semantic HTML
+- **Responsive**: Mobile-first approach
+
+---
+
+## Future Enhancements
+
+### Planned Features
+- [ ] Backend API integration
+- [ ] User authentication
+- [ ] Real-time data updates
+- [ ] Advanced filtering options
+- [ ] Custom date range selection
+- [ ] Email notifications
+- [ ] Multi-language support
+
+---
+
 ## Contributing
 
-We welcome contributions! Here's how you can help:
+Contributions are welcome! Here's how you can help:
 
 1. **Fork** the repository
 2. **Create** your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -214,8 +254,6 @@ We welcome contributions! Here's how you can help:
 - Write clear commit messages
 - Test on multiple browsers
 - Update documentation as needed
-
----
 
 ---
 
@@ -233,15 +271,23 @@ We welcome contributions! Here's how you can help:
 - Design inspiration from modern SaaS dashboards
 - Icons from [SVG Repo](https://www.svgrepo.com/)
 - Color palette inspired by Tailwind CSS
-- Community feedback and contributions
+- Chart.js for data visualization
 
 ---
 
+## Project Stats
+
+**Lines of Code:** ~2,500+  
+**Development Time:** 2 weeks  
+**Files:** 14  
+**First Frontend Project:** ✅
+
+---
 
 <div align="center">
 
 **[⬆ back to top](#-visor)**
 
-**[Report Bug](https://github.com/omanshchoudhary/visor/issues)** • **[Request Feature](https://github.com/omanshchoudhary/visor/issues)**
+Made with dedication and vanilla JavaScript 💻
 
 </div>
