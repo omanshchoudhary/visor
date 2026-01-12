@@ -127,5 +127,7 @@ async function localDashboard() {
     tableBodyElement.insertAdjacentHTML("beforeend", rowHTML);
   });
 }
+if(document.getElementById('revenueChart')){
+  localDashboard();
+}
 
-localDashboard();
