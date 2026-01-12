@@ -7,7 +7,7 @@ Built without frameworks to showcase clean architecture and performance-first UI
 ![Status](https://img.shields.io/badge/Status-Active-success.svg)
 ![Version](https://img.shields.io/badge/Version-1.0-blue.svg)
 
-**[Live Demo](https://your-vercel-url.vercel.app)** • **[Report Bug](https://github.com/omanshchoudhary/visor/issues)** • **[Request Feature](https://github.com/omanshchoudhary/visor/issues)**
+**[Live Demo](https://visor-omansh.vercel.app)** • **[Report Bug](https://github.com/omanshchoudhary/visor/issues)** • **[Request Feature](https://github.com/omanshchoudhary/visor/issues)**
 
 ---
 
