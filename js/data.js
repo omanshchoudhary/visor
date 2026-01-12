@@ -189,6 +189,11 @@ async function loadSales() {
   const chartCanvas = document.getElementById('salesChart');
   const result = await fetch('data/data.json')
   const data = await result.json();
+
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => downloadCSV(data));
+  }
   const dates = data.dailyStats.map(d => d.date);
   const conversions = data.dailyStats.map(d => d.conversionRate);
   new Chart(chartCanvas.getContext('2d'), {
@@ -235,3 +240,27 @@ async function loadSales() {
 }
 
 loadSales()
+
+function downloadCSV(data) {
+  const headers = ['Date', 'Revenue', 'Sign-Ups', 'Conversion Rate']
+  const csvRows = [];
+  csvRows.push(headers.join(','));
+  data.dailyStats.forEach(day => {
+    const row = [
+      day.date,
+      day.revenue,
+      day.signups,
+      day.conversionRate + '%'
+    ];
+    csvRows.push(row.join(','));
+  });
+
+  const csvString = csvRows.join('\n');
+  const blob = new Blob([csvString], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'visor-sales-report.csv';
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
