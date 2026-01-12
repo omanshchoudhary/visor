@@ -1,8 +1,6 @@
-/* ===========================================
-   RESPONSIVE STYLES
-   =========================================== */
 
-/* Tablet - 1024px and below */
+
+
 @media (max-width: 1024px) {
     .sidebar {
         width: 180px;
@@ -22,7 +20,7 @@
     }
 }
 
-/* Small Tablet - 768px and below */
+
 @media (max-width: 768px) {
     .header {
         padding: 0 16px;
@@ -48,7 +46,7 @@
         padding: 14px 0;
         justify-content: center;
         font-size: 0;
-        /* Hide text */
+        
         margin: 0 4px;
         border-radius: 8px;
         border-left: none;
@@ -111,7 +109,7 @@
     }
 }
 
-/* Mobile - 600px and below */
+
 @media (max-width: 600px) {
     .header {
         height: 52px;
@@ -139,18 +137,18 @@
         gap: 4px;
     }
 
-    /* Transform Sidebar to Bottom Nav */
+    
     .main-layout {
         display: block;
-        /* Disable flex to allow body scroll */
+        
         height: auto;
         padding-bottom: 60px;
-        /* Space for bottom nav */
+        
     }
 
     .content {
         overflow-y: visible;
-        /* Let body handle scroll */
+        
         max-height: none;
         padding: 12px;
     }
@@ -176,21 +174,21 @@
         height: 100%;
         margin: 0;
         border-radius: 0;
-        /* Remove border radius */
+        
         background-color: transparent;
         padding: 8px;
         gap: 4px;
         font-size: 10px;
-        /* Small text */
+        
         flex: 1;
         border-top: 3px solid transparent;
-        /* Top indicator */
+        
     }
 
     .sidebar>a:hover,
     .sidebar>a.active {
         background-color: rgba(255, 255, 255, 0.05);
-        /* Subtle bg on active */
+        
     }
 
     .sidebar>a.active {
@@ -198,7 +196,7 @@
         border-top-color: #6366f1;
     }
 
-    /* Adjust icon sizes for bottom nav */
+    
     .sidebar>a::before {
         font-size: 18px;
         margin-bottom: 0;
@@ -230,7 +228,7 @@
         height: 220px;
     }
 
-    /* Make table scrollable container explicit width */
+    
     .table-container {
         width: 100%;
         margin-bottom: 0;
@@ -242,7 +240,7 @@
         font-size: 13px;
     }
 
-    /* Coming Soon Page - Mobile */
+    
     .coming-soon h1 {
         font-size: 32px;
     }
@@ -253,9 +251,7 @@
     }
 }
 
-/* ===========================================
-   VERY SMALL MOBILE - 400px and below
-   =========================================== */
+
 @media (max-width: 400px) {
     .header {
         height: 48px;
@@ -332,7 +328,7 @@
         font-size: 12px;
     }
 
-    /* Coming Soon Page - Very Small */
+    
     .coming-soon h1 {
         font-size: 24px;
     }

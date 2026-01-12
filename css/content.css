@@ -9,7 +9,7 @@
     background-color: #f1f5f9;
 }
 
-/* Stats Row - Top 3 cards */
+
 .stats-row {
     display: flex;
     gap: 24px;
@@ -54,7 +54,7 @@
     opacity: 0.15;
 }
 
-/* Charts Row - Middle 2 cards */
+
 .charts-row {
     display: flex;
     gap: 24px;
@@ -84,7 +84,7 @@
 
 
 
-/* Table Card - Bottom */
+
 .table-card {
     background-color: #ffffff;
     border-radius: 12px;
@@ -106,7 +106,7 @@
 }
 
 
-/* Coming Soon Page */
+
 .coming-soon {
     flex: 1;
     display: flex;
@@ -157,7 +157,7 @@
     border-bottom: none;
 }
 
-/* Status Badges */
+
 .status-badge {
     padding: 4px 12px;
     border-radius: 20px;

@@ -27,13 +27,13 @@ body {
     height: calc(100vh - 60px);
 }
 
-/* Selection styling */
+
 ::selection {
     background-color: #6366f1;
     color: #ffffff;
 }
 
-/* Custom scrollbar */
+
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -52,7 +52,7 @@ body {
     background: #94a3b8;
 }
 
-/* Focus visible styling for accessibility */
+
 :focus-visible {
     outline: 2px solid #6366f1;
     outline-offset: 2px;

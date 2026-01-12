@@ -63,23 +63,23 @@ async function localDashboard() {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false, // Hides the box that says "Revenue" (we already know it's revenue)
+          display: false,
         },
       },
       scales: {
         x: {
           grid: {
-            display: false, // Removes vertical grid lines for a cleaner look
+            display: false,
           },
           ticks: {
-            maxTicksLimit: 8, // Only show ~8 dates maximum, not all 90
-            maxRotation: 0, // Keep dates flat, don't rotate them
+            maxTicksLimit: 8,
+            maxRotation: 0,
           },
         },
         y: {
           beginAtZero: true,
           grid: {
-            borderDash: [5, 5], // Makes horizontal lines dashed (looks modern)
+            borderDash: [5, 5],
           },
         },
       },
@@ -103,12 +103,12 @@ async function localDashboard() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: "75%", // Makes the doughnut ring thinner (more whitespace in middle)
+      cutout: "75%",
       plugins: {
         legend: {
-          position: "right", // Moves labels to the side
+          position: "right",
           labels: {
-            usePointStyle: true, // Uses circles instead of rectangles for the legend icons
+            usePointStyle: true,
             boxWidth: 8,
           },
         },
@@ -118,11 +118,11 @@ async function localDashboard() {
 
   const tableBodyElement = document.getElementById("campaign-rows");
   data.topCampaigns.forEach((campaign) => {
-    // Determine color based on status text
+
     const statusClass =
       campaign.status === "Active" ? "status-active" : "status-ended";
 
-    // Create the HTML row
+
     const rowHTML = `
         <tr>
             <td><span style="font-weight: 500;">${campaign.campaign}</span></td>
@@ -132,7 +132,7 @@ async function localDashboard() {
         </tr>
     `;
 
-    // Add to the table
+
     tableBodyElement.insertAdjacentHTML("beforeend", rowHTML);
   });
 }
@@ -171,7 +171,7 @@ if (document.getElementById('user-rows')) {
       const status = statusFilter.value;
 
       const filtered = users.filter(user => {
-        // Check matches
+
         const matchesSearch = user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query);
         const matchesStatus = status === 'All' || user.status === status;
 
@@ -203,7 +203,7 @@ async function loadSales() {
       datasets: [{
         label: 'Conversion Rate (%)',
         data: conversions,
-        borderColor: '#10b981', // Green color
+        borderColor: '#10b981',
         backgroundColor: 'rgba(16, 185, 129, 0.1)',
         fill: true,
         tension: 0.4
@@ -264,3 +264,30 @@ function downloadCSV(data) {
   a.click();
   window.URL.revokeObjectURL(url);
 }
+
+function initSettings() {
+  const form = getElementById('setingsForm')
+  if (!form) return;
+  const savedName = localStorage.getItem('visor_name');
+  const savedEmail = localStorage.getItem('visor_email');
+  const savedBio = localStorage.getItem('visor_bio');
+
+  if (savedName) document.getElementById('profileName').value = savedName;
+  if (savedEmail) document.getElementById('profileEmail').value = savedEmail;
+  if (savedBio) document.getElementById('profileBio').value = savedBio;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault(); 
+
+    const name = document.getElementById('profileName').value;
+    const email = document.getElementById('profileEmail').value;
+    const bio = document.getElementById('profileBio').value;
+
+    localStorage.setItem('visor_name', name);
+    localStorage.setItem('visor_email', email);
+    localStorage.setItem('visor_bio', bio);
+
+    alert('Settings Saved Successfully!');
+  });
+}
+
+initSettings();

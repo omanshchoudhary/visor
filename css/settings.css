@@ -86,7 +86,7 @@
     transform: translateY(0);
 }
 
-/* Dark Mode Support (assuming variables exist) */
+
 [data-theme='dark'] .settings-card {
     background-color: #1e293b;
     border-color: #334155;
