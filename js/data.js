@@ -1,3 +1,12 @@
+const users = [
+  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "Admin", status: "Active", lastActive: "2025-10-24" },
+  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "Editor", status: "Inactive", lastActive: "2025-09-12" },
+  { id: 3, name: "Charlie Davis", email: "charlie@tech.co", role: "Viewer", status: "Active", lastActive: "2025-11-01" },
+  { id: 4, name: "Diana Prince", email: "diana@wonder.net", role: "Admin", status: "Active", lastActive: "2025-12-03" },
+  { id: 5, name: "Evan Wright", email: "evan@write.io", role: "Editor", status: "Active", lastActive: "2025-11-15" },
+  { id: 6, name: "Fiona Green", email: "fiona@nature.org", role: "Viewer", status: "Inactive", lastActive: "2025-08-20" }
+];
+
 async function localDashboard() {
   let totalRevenue = 0;
   let totalSignups = 0;
@@ -5,7 +14,7 @@ async function localDashboard() {
 
   const response = await fetch("data/data.json");
   const data = await response.json();
-  
+
   data.dailyStats.forEach((stat) => {
     totalRevenue += stat.revenue;
     totalSignups += stat.signups;
@@ -127,7 +136,28 @@ async function localDashboard() {
     tableBodyElement.insertAdjacentHTML("beforeend", rowHTML);
   });
 }
-if(document.getElementById('revenueChart')){
+if (document.getElementById('revenueChart')) {
   localDashboard();
 }
 
+
+function loadUsers() {
+  const tableBodyElement = document.getElementById('user-rows')
+  if (!tableBodyElement) return;
+  tableBodyElement.innerHTML = '';
+  users.forEach(user => {
+    const statusColor = user.status === 'Active' ? 'status-active' : 'status-ended'
+    const rowHTML = `
+      <tr>
+          <td style="font-weight: 500;">${user.name}</td>
+          <td style="color: #64748b;">${user.email}</td>
+          <td>${user.role}</td>
+          <td><span class="status-badge ${statusColor}">${user.status}</span></td>
+          <td style="color: #64748b;">${user.lastActive}</td>
+      </tr>
+      `;
+    tableBodyElement.insertAdjacentHTML('beforeend', rowHTML);
+  })
+}
+
+loadUsers();

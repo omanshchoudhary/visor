@@ -51,12 +51,25 @@
             <a href="help.html" class="nav-help">Help</a>
         </nav>
         <main class="content">
-            <div class="coming-soon">
-                <h1>Coming Soon</h1>
-                <p>The Users page is under construction.</p>
+            <div class="table-card">
+                <div class="table-tile">All Users</div>
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Active</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-rows">
+                    </tbody>
+                </table>
             </div>
         </main>
     </div>
+    <script src="js/data.js"></script>
     <script src="js/theme.js"></script>
 </body>
 
