@@ -19,7 +19,7 @@
 <body>
     <header class="header">
         <div class="header-title">Visor</div>
-        <input type="text" placeholder="Search" aria-label="Search dashboard" />
+        <input type="text" placeholder="Search" aria-label="Search dashboard" id="searchInput" />
         <div class="header-utility">
             <button type="button" class="utility-btn" aria-label="Notifications">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -52,7 +52,15 @@
         </nav>
         <main class="content">
             <div class="table-card">
-                <div class="table-tile">All Users</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div class="table-title" style="margin-bottom: 0;">All Users</div>
+                    <select id="statusFilter"
+                        style="padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; color: #64748b;">
+                        <option value="All">All Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
                 <table class="dashboard-table">
                     <thead>
                         <tr>
