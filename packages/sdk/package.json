@@ -1,0 +1,30 @@
+{
+  "name": "@visorhq/node",
+  "version": "0.0.0",
+  "description": "Visor SDK for Node.js and Express",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omanshchoudhary/visor.git",
+    "directory": "packages/sdk"
+  },
+  "dependencies": {
+    "@visorhq/contract": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0"
+  }
+}

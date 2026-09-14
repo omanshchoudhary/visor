@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/contract" },
+    { "path": "packages/sdk" },
+    { "path": "packages/mcp" },
+    { "path": "apps/server" }
+  ]
+}

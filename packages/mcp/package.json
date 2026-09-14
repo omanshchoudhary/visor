@@ -1,0 +1,30 @@
+{
+  "name": "@visorhq/mcp",
+  "version": "0.0.0",
+  "description": "MCP server that lets coding agents read Visor data",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omanshchoudhary/visor.git",
+    "directory": "packages/mcp"
+  },
+  "dependencies": {
+    "@visorhq/contract": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0"
+  }
+}
