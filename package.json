@@ -6,7 +6,8 @@
   "packageManager": "pnpm@12.4.1",
   "scripts": {
     "prepare": "husky",
-    "build": "tsc -b",
+    "dev": "pnpm -r --parallel --if-present dev",
+    "build": "tsc -b && pnpm -r --if-present build",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -17,6 +18,8 @@
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.5.1",
     "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.6",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
     "prettier": "^3.9.6",
