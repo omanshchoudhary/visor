@@ -54,3 +54,6 @@ coverage/
 *.bak
 *.backup
 .eslintcache
+
+# Generated code
+apps/server/src/generated/

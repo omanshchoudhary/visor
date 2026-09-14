@@ -4,7 +4,25 @@
   "private": true,
   "license": "MIT",
   "type": "module",
+  "scripts": {
+    "postinstall": "prisma generate",
+    "dev": "node --watch --env-file-if-exists=.env src/index.ts",
+    "start": "node --env-file-if-exists=.env dist/index.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev && prisma generate",
+    "db:deploy": "prisma migrate deploy"
+  },
   "dependencies": {
-    "@visorhq/contract": "workspace:*"
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "@visorhq/contract": "workspace:*",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/pg": "^8.23.1",
+    "prisma": "7.10.0"
   }
 }

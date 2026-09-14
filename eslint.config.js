@@ -3,7 +3,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-    globalIgnores(["**/dist/", "**/coverage/"]),
+    globalIgnores(["**/dist/", "**/coverage/", "apps/server/src/generated/"]),
     js.configs.recommended,
     tseslint.configs.recommendedTypeChecked,
     {
@@ -15,7 +15,7 @@ export default defineConfig(
         },
     },
     {
-        files: ["*.js", "*.config.ts"],
+        files: ["**/*.js", "**/*.config.ts"],
         extends: [tseslint.configs.disableTypeChecked],
     },
 );
