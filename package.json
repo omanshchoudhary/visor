@@ -5,6 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@12.4.1",
   "scripts": {
+    "prepare": "husky",
     "build": "tsc -b",
     "typecheck": "tsc -b",
     "lint": "eslint .",
@@ -16,9 +17,18 @@
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.5.1",
     "eslint": "^10.10.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
     "prettier": "^3.9.6",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.70.0",
     "vitest": "^5.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "eslint --fix --no-warn-ignored",
+      "prettier --write"
+    ],
+    "*.{json,yaml,yml,css,html}": "prettier --write"
   }
 }
