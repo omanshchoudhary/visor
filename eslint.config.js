@@ -17,7 +17,7 @@ export default defineConfig(
         },
     },
     {
-        files: ["apps/web/**/*.{ts,tsx}", "packages/ui/**/*.{ts,tsx}"],
+        files: ["apps/web/**/*.{ts,tsx}", "apps/site/**/*.{ts,tsx}", "packages/ui/**/*.{ts,tsx}"],
         extends: [reactHooks.configs.flat.recommended, reactRefresh.configs.vite()],
     },
     {
