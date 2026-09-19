@@ -3,6 +3,7 @@ import { DataFlow } from "./sections/data-flow.tsx";
 import { Hero } from "./sections/hero.tsx";
 import { HowItWorks } from "./sections/how-it-works.tsx";
 import { Nav } from "./sections/nav.tsx";
+import { Sdk } from "./sections/sdk.tsx";
 import { Ticker } from "./sections/ticker.tsx";
 import { WhatYouGet } from "./sections/what-you-get.tsx";
 
@@ -17,6 +18,7 @@ export function App() {
                 <HowItWorks />
                 <DataFlow />
                 <WhatYouGet />
+                <Sdk />
             </main>
         </div>
     );
