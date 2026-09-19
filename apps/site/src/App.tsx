@@ -1,8 +1,10 @@
 import { Commitments } from "./sections/commitments.tsx";
+import { DataFlow } from "./sections/data-flow.tsx";
 import { Hero } from "./sections/hero.tsx";
 import { HowItWorks } from "./sections/how-it-works.tsx";
 import { Nav } from "./sections/nav.tsx";
 import { Ticker } from "./sections/ticker.tsx";
+import { WhatYouGet } from "./sections/what-you-get.tsx";
 
 export function App() {
     return (
@@ -13,6 +15,8 @@ export function App() {
                 <Hero />
                 <Commitments />
                 <HowItWorks />
+                <DataFlow />
+                <WhatYouGet />
             </main>
         </div>
     );
