@@ -4,9 +4,11 @@ import { DataFlow } from "./sections/data-flow.tsx";
 import { Hero } from "./sections/hero.tsx";
 import { HowItWorks } from "./sections/how-it-works.tsx";
 import { Nav } from "./sections/nav.tsx";
+import { Overhead } from "./sections/overhead.tsx";
 import { Sdk } from "./sections/sdk.tsx";
 import { Ticker } from "./sections/ticker.tsx";
 import { WhatYouGet } from "./sections/what-you-get.tsx";
+import { Why } from "./sections/why.tsx";
 
 export function App() {
     return (
@@ -21,6 +23,8 @@ export function App() {
                 <WhatYouGet />
                 <Sdk />
                 <Agents />
+                <Overhead />
+                <Why />
             </main>
         </div>
     );
