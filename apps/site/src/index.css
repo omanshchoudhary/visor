@@ -6,6 +6,7 @@
     --animate-draw: draw 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.7s both;
     --animate-fade-area: fade 0.8s ease 1.6s both;
     --animate-fade-dot: fade 0.4s ease 2.2s both;
+    --animate-caret: caret 1.1s steps(1) infinite;
 
     @keyframes ticker {
         to {
@@ -24,6 +25,12 @@
 
     @keyframes fade {
         from {
+            opacity: 0;
+        }
+    }
+
+    @keyframes caret {
+        50% {
             opacity: 0;
         }
     }
@@ -63,7 +70,8 @@
     .animate-ticker,
     .animate-draw,
     .animate-fade-area,
-    .animate-fade-dot {
+    .animate-fade-dot,
+    .animate-caret {
         animation: none;
     }
 }

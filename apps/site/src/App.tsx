@@ -1,3 +1,4 @@
+import { Agents } from "./sections/agents.tsx";
 import { Commitments } from "./sections/commitments.tsx";
 import { DataFlow } from "./sections/data-flow.tsx";
 import { Hero } from "./sections/hero.tsx";
@@ -19,6 +20,7 @@ export function App() {
                 <DataFlow />
                 <WhatYouGet />
                 <Sdk />
+                <Agents />
             </main>
         </div>
     );
