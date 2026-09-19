@@ -1,0 +1,15 @@
+.git
+**/node_modules
+**/dist
+**/coverage
+**/*.tsbuildinfo
+**/.env
+**/.env.*
+!**/.env.example
+apps/server/src/generated
+PRD.md
+PRD copy.md
+Dockerfile
+.dockerignore
+compose.yaml
+.github
