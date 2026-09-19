@@ -13,7 +13,7 @@ const compose = [
     ["$", "git clone https://github.com/omanshchoudhary/visor"],
     ["$", "cd visor && cp .env.example .env"],
     ["$", "docker compose up"],
-    ["#", "Dashboard on :5173 · API on :3000 · migrations on start"],
+    ["#", "Dashboard on localhost:8080 · migrations run on start"],
 ];
 
 const fits = [
