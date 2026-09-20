@@ -53,3 +53,78 @@ describe("POST /api/auth/register", () => {
         expect(body.fields).toBeDefined();
     });
 });
+
+describe("POST /api/auth/login", () => {
+    beforeEach(async () => {
+        await resetDatabase();
+    });
+
+    it("returns 200 with an access token and refresh cookie", async () => {
+        const signup = await request(app).post("/api/auth/register").send({
+            email: "ada@example.com",
+            name: "Ada",
+            password: "password1",
+        });
+
+        const response = await request(app).post("/api/auth/login").send({
+            email: "ada@example.com",
+            password: "password1",
+        });
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            user: {
+                id: (signup.body as { id: string }).id,
+                email: "ada@example.com",
+                name: "Ada",
+            },
+            accessToken: expect.any(String) as string,
+        });
+        expect(response.body).not.toHaveProperty("passwordHash");
+        expect(response.body).not.toHaveProperty("refreshToken");
+
+        const cookies = response.headers["set-cookie"];
+        expect(cookies).toEqual(
+            expect.arrayContaining([expect.stringMatching(/^refreshToken=.+HttpOnly/) as string]),
+        );
+    });
+
+    it("returns 401 for a wrong password", async () => {
+        await request(app).post("/api/auth/register").send({
+            email: "ada@example.com",
+            name: "Ada",
+            password: "password1",
+        });
+
+        const response = await request(app).post("/api/auth/login").send({
+            email: "ada@example.com",
+            password: "wrong-password",
+        });
+
+        expect(response.status).toBe(401);
+        expect(response.body).toEqual({ error: "Invalid email or password" });
+    });
+
+    it("returns 401 for an unknown email", async () => {
+        const response = await request(app).post("/api/auth/login").send({
+            email: "nobody@example.com",
+            password: "password1",
+        });
+
+        expect(response.status).toBe(401);
+        expect(response.body).toEqual({ error: "Invalid email or password" });
+    });
+
+    it("returns 400 for a bad body", async () => {
+        const response = await request(app).post("/api/auth/login").send({
+            email: "not-an-email",
+            password: "",
+        });
+
+        const body = response.body as { error: string; fields?: unknown };
+
+        expect(response.status).toBe(400);
+        expect(body.error).toBe("Invalid request");
+        expect(body.fields).toBeDefined();
+    });
+});
