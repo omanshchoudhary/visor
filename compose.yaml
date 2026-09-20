@@ -35,6 +35,8 @@ services:
     environment:
       DATABASE_URL: postgresql://visor:visor@postgres:5432/visor
       PORT: 3000
+      AUTH_SECRET: dev-only-secret-never-use-in-production
+      APP_URL: http://localhost:8080
     depends_on:
       postgres:
         condition: service_healthy
