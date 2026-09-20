@@ -1,4 +1,8 @@
+import { hash } from "@node-rs/argon2";
+
+import { prisma } from "../db.ts";
 import { HttpError } from "../errors.ts";
+import { Prisma } from "../generated/prisma/client.ts";
 
 export type PublicUser = {
     id: string;
@@ -23,8 +27,29 @@ export type LoginInput = {
     password: string;
 };
 
-export function registerUser(_input: RegisterInput): Promise<PublicUser> {
-    throw new HttpError(501, "Not implemented");
+export async function registerUser(input: RegisterInput): Promise<PublicUser> {
+    const email = input.email.trim().toLowerCase();
+    const passwordHash = await hash(input.password);
+
+    try {
+        return await prisma.user.create({
+            data: {
+                email,
+                name: input.name,
+                passwordHash,
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+            },
+        });
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+            throw new HttpError(409, "Email already taken");
+        }
+        throw error;
+    }
 }
 
 export function verifyCredentials(_input: LoginInput): Promise<PublicUser> {
