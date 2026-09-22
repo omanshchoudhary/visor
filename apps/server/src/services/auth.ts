@@ -115,8 +115,61 @@ export async function startSession(userId: string): Promise<SessionTokens> {
     };
 }
 
-export function rotateRefreshToken(_refreshToken: string): Promise<SessionTokens> {
-    throw new HttpError(501, "Not implemented");
+export async function rotateRefreshToken(refreshToken: string): Promise<SessionTokens> {
+    const tokenHash = hashToken(refreshToken);
+    const now = new Date();
+
+    const token = await prisma.refreshToken.findUnique({
+        where: { tokenHash },
+        include: { session: true },
+    });
+
+    if (!token || token.session.revokedAt != null || token.session.expiresAt <= now) {
+        throw new HttpError(401, "Invalid refresh token");
+    }
+
+    const nextRefreshToken = newRefreshToken();
+    const rotated = await prisma.$transaction(async (tx) => {
+        const spent = await tx.refreshToken.updateMany({
+            where: {
+                id: token.id,
+                usedAt: null,
+            },
+            data: { usedAt: now },
+        });
+        if (spent.count !== 1) {
+            return false;
+        }
+
+        await tx.refreshToken.create({
+            data: {
+                sessionId: token.sessionId,
+                tokenHash: hashToken(nextRefreshToken),
+                usedAt: null,
+            },
+        });
+
+        await tx.session.update({
+            where: { id: token.sessionId },
+            data: { lastUsedAt: now },
+        });
+
+        return true;
+    });
+
+    if (!rotated) {
+        await prisma.session.update({
+            where: { id: token.sessionId },
+            data: { revokedAt: now },
+        });
+        throw new HttpError(401, "Invalid refresh token");
+    }
+
+    return {
+        accessToken: await signAccessToken(token.session.userId, token.sessionId),
+        refreshToken: nextRefreshToken,
+        refreshTokenExpiresAt: token.session.expiresAt,
+    };
 }
 
 export function revokeSession(_refreshToken: string): Promise<void> {
