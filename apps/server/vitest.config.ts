@@ -9,6 +9,7 @@ export default defineConfig({
             DATABASE_URL: testDatabaseUrl,
             AUTH_SECRET: "test-secret-that-is-long-enough-to-pass",
         },
+        include: ["src/**/*.test.ts"],
         globalSetup: "./src/test/global-setup.ts",
         fileParallelism: false,
     },
