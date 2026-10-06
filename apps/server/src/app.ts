@@ -5,6 +5,9 @@ import { httpLogger } from "./logger.ts";
 import { errorHandler, notFound } from "./middleware/error-handler.ts";
 import { authRouter } from "./routes/auth.ts";
 import { healthHandler } from "./routes/health.ts";
+import { invitesRouter } from "./routes/invites.ts";
+import { organizationsRouter } from "./routes/organizations.ts";
+import { usersRouter } from "./routes/users.ts";
 
 export const app: Express = express();
 
@@ -15,6 +18,9 @@ app.use(cookieParser());
 
 app.get("/health", healthHandler);
 app.use("/api/auth", authRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/orgs", organizationsRouter);
+app.use("/api/invites", invitesRouter);
 
 app.use(notFound);
 app.use(errorHandler);
