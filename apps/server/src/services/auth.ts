@@ -175,3 +175,16 @@ export async function rotateRefreshToken(refreshToken: string): Promise<SessionT
 export function revokeSession(_refreshToken: string): Promise<void> {
     throw new HttpError(501, "Not implemented");
 }
+
+export type ResetPasswordInput = {
+    token: string;
+    password: string;
+};
+
+export function requestPasswordReset(_email: string): Promise<void> {
+    throw new HttpError(501, "Not implemented");
+}
+
+export function resetPassword(_input: ResetPasswordInput): Promise<void> {
+    throw new HttpError(501, "Not implemented");
+}

@@ -65,3 +65,11 @@ export const refresh: RequestHandler = async (req, res) => {
 export const logout: RequestHandler = (_req, _res) => {
     throw new HttpError(501, "Not implemented");
 };
+
+export const forgotPassword: RequestHandler = (_req, _res) => {
+    throw new HttpError(501, "Not implemented");
+};
+
+export const resetPassword: RequestHandler = (_req, _res) => {
+    throw new HttpError(501, "Not implemented");
+};
