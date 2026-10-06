@@ -3,6 +3,7 @@ import express, { type Express } from "express";
 
 import { httpLogger } from "./logger.ts";
 import { errorHandler, notFound } from "./middleware/error-handler.ts";
+import { requireAuth } from "./middleware/require-auth.ts";
 import { authRouter } from "./routes/auth.ts";
 import { healthHandler } from "./routes/health.ts";
 import { invitesRouter } from "./routes/invites.ts";
@@ -18,9 +19,9 @@ app.use(cookieParser());
 
 app.get("/health", healthHandler);
 app.use("/api/auth", authRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/orgs", organizationsRouter);
-app.use("/api/invites", invitesRouter);
+app.use("/api/users", requireAuth, usersRouter);
+app.use("/api/orgs", requireAuth, organizationsRouter);
+app.use("/api/invites", requireAuth, invitesRouter);
 
 app.use(notFound);
 app.use(errorHandler);
