@@ -128,3 +128,116 @@ describe("POST /api/auth/login", () => {
         expect(body.fields).toBeDefined();
     });
 });
+
+function refreshCookie(headers: Record<string, unknown>): string {
+    const cookies = headers["set-cookie"] as string[] | undefined;
+    const cookie = cookies?.find((value) => value.startsWith("refreshToken="));
+
+    if (cookie === undefined) {
+        throw new Error("no refresh cookie was set");
+    }
+
+    return cookie.split(";")[0] ?? cookie;
+}
+
+async function signIn(): Promise<string> {
+    await request(app).post("/api/auth/register").send({
+        email: "ada@example.com",
+        name: "Ada",
+        password: "password1",
+    });
+    const login = await request(app).post("/api/auth/login").send({
+        email: "ada@example.com",
+        password: "password1",
+    });
+
+    return refreshCookie(login.headers);
+}
+
+describe("POST /api/auth/refresh", () => {
+    beforeEach(async () => {
+        await resetDatabase();
+    });
+
+    it("returns a new access token and rotates the cookie", async () => {
+        const cookie = await signIn();
+
+        const response = await request(app).post("/api/auth/refresh").set("Cookie", cookie);
+        const body = response.body as { accessToken: string };
+
+        expect(response.status).toBe(200);
+        expect(body.accessToken).toEqual(expect.any(String) as string);
+        expect(refreshCookie(response.headers)).not.toBe(cookie);
+    });
+
+    it("returns 401 without a cookie", async () => {
+        await signIn();
+
+        const response = await request(app).post("/api/auth/refresh");
+
+        expect(response.status).toBe(401);
+    });
+
+    it("returns 401 for an unknown token", async () => {
+        await signIn();
+
+        const response = await request(app)
+            .post("/api/auth/refresh")
+            .set("Cookie", "refreshToken=not-a-real-token");
+
+        expect(response.status).toBe(401);
+    });
+
+    it("kills the whole session when an old token is replayed", async () => {
+        const first = await signIn();
+
+        const rotated = await request(app).post("/api/auth/refresh").set("Cookie", first);
+        const second = refreshCookie(rotated.headers);
+
+        const replay = await request(app).post("/api/auth/refresh").set("Cookie", first);
+        const afterReplay = await request(app).post("/api/auth/refresh").set("Cookie", second);
+
+        expect(replay.status).toBe(401);
+        expect(afterReplay.status).toBe(401);
+    });
+});
+
+describe("POST /api/auth/logout", () => {
+    beforeEach(async () => {
+        await resetDatabase();
+    });
+
+    it("returns 204 and clears the cookie", async () => {
+        const cookie = await signIn();
+
+        const response = await request(app).post("/api/auth/logout").set("Cookie", cookie);
+        const cleared = response.headers["set-cookie"] as unknown as string[];
+
+        expect(response.status).toBe(204);
+        expect(cleared.join(";")).toMatch(/refreshToken=;/);
+        expect(cleared.join(";")).toMatch(/Path=\/api\/auth/);
+    });
+
+    it("stops the refresh token from working", async () => {
+        const cookie = await signIn();
+
+        await request(app).post("/api/auth/logout").set("Cookie", cookie);
+        const response = await request(app).post("/api/auth/refresh").set("Cookie", cookie);
+
+        expect(response.status).toBe(401);
+    });
+
+    it("returns 204 without a cookie", async () => {
+        const response = await request(app).post("/api/auth/logout");
+
+        expect(response.status).toBe(204);
+    });
+
+    it("returns 204 for an unknown token", async () => {
+        const response = await request(app)
+            .post("/api/auth/logout")
+            .set("Cookie", "refreshToken=not-a-real-token");
+
+        expect(response.status).toBe(204);
+    });
+});

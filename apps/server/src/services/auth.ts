@@ -172,8 +172,22 @@ export async function rotateRefreshToken(refreshToken: string): Promise<SessionT
     };
 }
 
-export function revokeSession(_refreshToken: string): Promise<void> {
-    throw new HttpError(501, "Not implemented");
+export async function revokeSession(refreshToken: string): Promise<void> {
+    const tokenHash = hashToken(refreshToken);
+
+    const token = await prisma.refreshToken.findUnique({
+        where: { tokenHash },
+        select: { sessionId: true },
+    });
+
+    if (!token) {
+        return;
+    }
+
+    await prisma.session.updateMany({
+        where: { id: token.sessionId, revokedAt: null },
+        data: { revokedAt: new Date() },
+    });
 }
 
 export type ResetPasswordInput = {

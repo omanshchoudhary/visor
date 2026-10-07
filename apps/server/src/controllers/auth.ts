@@ -5,6 +5,7 @@ import { config } from "../config.ts";
 import { HttpError } from "../errors.ts";
 import {
     registerUser,
+    revokeSession,
     rotateRefreshToken,
     startSession,
     verifyCredentials,
@@ -62,8 +63,19 @@ export const refresh: RequestHandler = async (req, res) => {
     res.status(200).json({ accessToken: tokens.accessToken });
 };
 
-export const logout: RequestHandler = (_req, _res) => {
-    throw new HttpError(501, "Not implemented");
+export const logout: RequestHandler = async (req, res) => {
+    const cookies = refreshCookieSchema.safeParse(req.cookies);
+    if (cookies.success) {
+        await revokeSession(cookies.data.refreshToken);
+    }
+
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: config.NODE_ENV === "production",
+        path: "/api/auth",
+    });
+    res.status(204).send();
 };
 
 export const forgotPassword: RequestHandler = (_req, _res) => {
