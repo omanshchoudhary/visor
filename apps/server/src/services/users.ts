@@ -1,3 +1,4 @@
+import { prisma } from "../db.ts";
 import { HttpError } from "../errors.ts";
 
 export type UserProfile = {
@@ -16,8 +17,17 @@ export type ChangePasswordInput = {
     newPassword: string;
 };
 
-export function getUserProfile(_userId: string): Promise<UserProfile> {
-    throw new HttpError(501, "Not implemented");
+export async function getUserProfile(userId: string): Promise<UserProfile> {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true, email: true, name: true, createdAt: true },
+    });
+
+    if (user === null) {
+        throw new HttpError(404, "User not found");
+    }
+
+    return user;
 }
 
 export function updateUserProfile(_userId: string, _input: UpdateUserInput): Promise<UserProfile> {

@@ -6,6 +6,13 @@ import { HttpError } from "../errors.ts";
 
 const authSecret = new TextEncoder().encode(config.AUTH_SECRET);
 
+export function authenticatedUserId(req: Request): string {
+    if (!req.userId) {
+        throw new HttpError(401, "Invalid request!");
+    }
+    return req.userId;
+}
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction) {
     try {
         const [scheme, token] = req.headers.authorization?.split(" ") ?? [];
