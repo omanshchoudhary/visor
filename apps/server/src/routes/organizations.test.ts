@@ -3,33 +3,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { app } from "../app.ts";
 import { prisma } from "../db.ts";
+import { addMember, createOrganization, signUp } from "../test/api.ts";
 import { resetDatabase } from "../test/database.ts";
-
-type Account = {
-    userId: string;
-    token: string;
-};
-
-async function signUp(email: string): Promise<Account> {
-    const signup = await request(app)
-        .post("/api/auth/register")
-        .send({ email, name: "Tester", password: "password1" });
-    const login = await request(app).post("/api/auth/login").send({ email, password: "password1" });
-
-    return {
-        userId: (signup.body as { id: string }).id,
-        token: (login.body as { accessToken: string }).accessToken,
-    };
-}
-
-async function createOrganization(account: Account, name: string): Promise<string> {
-    const response = await request(app)
-        .post("/api/orgs")
-        .set("Authorization", `Bearer ${account.token}`)
-        .send({ name });
-
-    return (response.body as { id: string }).id;
-}
 
 describe("organization routes", () => {
     beforeEach(async () => {
@@ -132,9 +107,7 @@ describe("organization routes", () => {
         const owner = await signUp("owner@example.com");
         const member = await signUp("member@example.com");
         const organizationId = await createOrganization(owner, "Acme");
-        await prisma.membership.create({
-            data: { userId: member.userId, organizationId, role: "MEMBER" },
-        });
+        await addMember(member, organizationId, "MEMBER");
 
         const renamed = await request(app)
             .patch(`/api/orgs/${organizationId}`)
@@ -152,9 +125,7 @@ describe("organization routes", () => {
         const owner = await signUp("owner@example.com");
         const member = await signUp("member@example.com");
         const organizationId = await createOrganization(owner, "Acme");
-        await prisma.membership.create({
-            data: { userId: member.userId, organizationId, role: "MEMBER" },
-        });
+        await addMember(member, organizationId, "MEMBER");
 
         const response = await request(app)
             .get(`/api/orgs/${organizationId}`)
