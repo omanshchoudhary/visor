@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { z } from "zod";
 
-import { config } from "../config.ts";
+import { REFRESH_COOKIE_NAME, refreshCookieOptions } from "../cookies.ts";
 import { HttpError } from "../errors.ts";
 import {
     registerUser,
@@ -36,12 +36,9 @@ export const login: RequestHandler = async (req, res) => {
     const body = loginSchema.parse(req.body);
     const user = await verifyCredentials(body);
     const tokens = await startSession(user.id);
-    res.cookie("refreshToken", tokens.refreshToken, {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: config.NODE_ENV === "production",
+    res.cookie(REFRESH_COOKIE_NAME, tokens.refreshToken, {
+        ...refreshCookieOptions,
         expires: tokens.refreshTokenExpiresAt,
-        path: "/api/auth",
     });
     res.status(200).json({ user, accessToken: tokens.accessToken });
 };
@@ -53,12 +50,9 @@ export const refresh: RequestHandler = async (req, res) => {
     }
 
     const tokens = await rotateRefreshToken(cookies.data.refreshToken);
-    res.cookie("refreshToken", tokens.refreshToken, {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: config.NODE_ENV === "production",
+    res.cookie(REFRESH_COOKIE_NAME, tokens.refreshToken, {
+        ...refreshCookieOptions,
         expires: tokens.refreshTokenExpiresAt,
-        path: "/api/auth",
     });
     res.status(200).json({ accessToken: tokens.accessToken });
 };
@@ -69,12 +63,7 @@ export const logout: RequestHandler = async (req, res) => {
         await revokeSession(cookies.data.refreshToken);
     }
 
-    res.clearCookie("refreshToken", {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: config.NODE_ENV === "production",
-        path: "/api/auth",
-    });
+    res.clearCookie(REFRESH_COOKIE_NAME, refreshCookieOptions);
     res.status(204).send();
 };
 
