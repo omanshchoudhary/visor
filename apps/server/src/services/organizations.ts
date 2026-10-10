@@ -2,6 +2,7 @@ import { prisma } from "../db.ts";
 import { HttpError } from "../errors.ts";
 import type { Role } from "../generated/prisma/client.ts";
 import { requireMembership } from "./access.ts";
+import { inSerializableTransaction } from "./transactions.ts";
 
 export type OrganizationSummary = {
     id: string;
@@ -114,28 +115,114 @@ export async function deleteOrganization(
     await prisma.organization.delete({ where: { id: organizationId } });
 }
 
-export function listMembers(
-    _actorUserId: string,
-    _organizationId: string,
+export async function listMembers(
+    actorUserId: string,
+    organizationId: string,
 ): Promise<OrganizationMember[]> {
-    throw new HttpError(501, "Not implemented");
+    await requireMembership(actorUserId, organizationId, "VIEWER");
+
+    const memberships = await prisma.membership.findMany({
+        where: { organizationId },
+        select: {
+            userId: true,
+            role: true,
+            createdAt: true,
+            user: { select: { email: true, name: true } },
+        },
+        orderBy: { createdAt: "asc" },
+    });
+
+    return memberships.map((membership) => ({
+        userId: membership.userId,
+        email: membership.user.email,
+        name: membership.user.name,
+        role: membership.role,
+        createdAt: membership.createdAt,
+    }));
 }
 
-export function updateMemberRole(
-    _actorUserId: string,
-    _organizationId: string,
-    _memberUserId: string,
-    _role: Role,
+export async function updateMemberRole(
+    actorUserId: string,
+    organizationId: string,
+    memberUserId: string,
+    role: Role,
 ): Promise<OrganizationMember> {
-    throw new HttpError(501, "Not implemented");
+    await requireMembership(actorUserId, organizationId, "ADMIN");
+
+    return inSerializableTransaction(async (tx) => {
+        const membership = await tx.membership.findUnique({
+            where: { userId_organizationId: { userId: memberUserId, organizationId } },
+            select: { role: true },
+        });
+
+        if (membership === null) {
+            throw new HttpError(404, "Member not found");
+        }
+
+        if (membership.role === "ADMIN" && role !== "ADMIN") {
+            const admins = await tx.membership.count({
+                where: { organizationId, role: "ADMIN" },
+            });
+
+            if (admins <= 1) {
+                throw new HttpError(409, "The last admin cannot be demoted");
+            }
+        }
+
+        const updated = await tx.membership.update({
+            where: { userId_organizationId: { userId: memberUserId, organizationId } },
+            data: { role },
+            select: {
+                userId: true,
+                role: true,
+                createdAt: true,
+                user: { select: { email: true, name: true } },
+            },
+        });
+
+        return {
+            userId: updated.userId,
+            email: updated.user.email,
+            name: updated.user.name,
+            role: updated.role,
+            createdAt: updated.createdAt,
+        };
+    });
 }
 
-export function removeMember(
-    _actorUserId: string,
-    _organizationId: string,
-    _memberUserId: string,
+export async function removeMember(
+    actorUserId: string,
+    organizationId: string,
+    memberUserId: string,
 ): Promise<void> {
-    throw new HttpError(501, "Not implemented");
+    // leaving needs no rank, removing someone else does
+    const minimum: Role = memberUserId === actorUserId ? "VIEWER" : "ADMIN";
+    await requireMembership(actorUserId, organizationId, minimum);
+
+    await inSerializableTransaction(async (tx) => {
+        const membership = await tx.membership.findUnique({
+            where: { userId_organizationId: { userId: memberUserId, organizationId } },
+            select: { role: true },
+        });
+
+        if (membership === null) {
+            throw new HttpError(404, "Member not found");
+        }
+
+        if (membership.role === "ADMIN") {
+            const admins = await tx.membership.count({
+                where: { organizationId, role: "ADMIN" },
+            });
+
+            if (admins <= 1) {
+                throw new HttpError(409, "The last admin cannot be removed");
+            }
+        }
+
+        await tx.membership.delete({
+            where: { userId_organizationId: { userId: memberUserId, organizationId } },
+        });
+    });
 }
 
 export function createInvite(
