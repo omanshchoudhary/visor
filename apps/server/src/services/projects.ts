@@ -26,7 +26,10 @@ const projectFields = {
 } as const;
 
 // scoped on both ids so a project id from another org reads as missing
-async function findProject(organizationId: string, projectId: string): Promise<ProjectSummary> {
+export async function requireProject(
+    organizationId: string,
+    projectId: string,
+): Promise<ProjectSummary> {
     const project = await prisma.project.findFirst({
         where: { id: projectId, organizationId },
         select: projectFields,
@@ -83,7 +86,7 @@ export async function getProject(
 ): Promise<ProjectSummary> {
     await requireMembership(actorUserId, organizationId, "VIEWER");
 
-    return findProject(organizationId, projectId);
+    return requireProject(organizationId, projectId);
 }
 
 export async function updateProject(
@@ -93,7 +96,7 @@ export async function updateProject(
     input: UpdateProjectInput,
 ): Promise<ProjectSummary> {
     await requireMembership(actorUserId, organizationId, "MEMBER");
-    await findProject(organizationId, projectId);
+    await requireProject(organizationId, projectId);
 
     try {
         return await prisma.project.update({
@@ -112,7 +115,7 @@ export async function deleteProject(
     projectId: string,
 ): Promise<void> {
     await requireMembership(actorUserId, organizationId, "ADMIN");
-    await findProject(organizationId, projectId);
+    await requireProject(organizationId, projectId);
 
     await prisma.project.delete({ where: { id: projectId } });
 }

@@ -1,25 +1,17 @@
 import { hash, verify } from "@node-rs/argon2";
 import { SignJWT } from "jose";
-import { createHash, randomBytes } from "node:crypto";
 
 import { config } from "../config.ts";
 import { prisma } from "../db.ts";
 import { HttpError } from "../errors.ts";
 import { Prisma } from "../generated/prisma/client.ts";
+import { hashToken, randomToken } from "./tokens.ts";
 
 const ACCESS_TOKEN_TTL = "15m";
 const DUMMY_PASSWORD_HASH =
     "$argon2id$v=19$m=19456,t=2,p=1$6Wv7Ka0rde83OmQgYDo2rg$CPb0YJNr9onAwzEpp2DICN9eLPScOhWywzx4Pr9k/oY";
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const authSecret = new TextEncoder().encode(config.AUTH_SECRET);
-
-function hashToken(token: string): string {
-    return createHash("sha256").update(token).digest("hex");
-}
-
-function newRefreshToken(): string {
-    return randomBytes(32).toString("base64url");
-}
 
 async function signAccessToken(userId: string, sessionId: string): Promise<string> {
     return new SignJWT({ sid: sessionId })
@@ -95,7 +87,7 @@ export async function verifyCredentials(input: LoginInput): Promise<PublicUser> 
 }
 
 export async function startSession(userId: string): Promise<SessionTokens> {
-    const refreshToken = newRefreshToken();
+    const refreshToken = randomToken();
     const refreshTokenExpiresAt = new Date(Date.now() + SESSION_TTL_MS);
 
     const session = await prisma.session.create({
@@ -128,7 +120,7 @@ export async function rotateRefreshToken(refreshToken: string): Promise<SessionT
         throw new HttpError(401, "Invalid refresh token");
     }
 
-    const nextRefreshToken = newRefreshToken();
+    const nextRefreshToken = randomToken();
     const rotated = await prisma.$transaction(async (tx) => {
         const spent = await tx.refreshToken.updateMany({
             where: {

@@ -1,15 +1,49 @@
 import type { RequestHandler } from "express";
+import { z } from "zod";
 
-import { HttpError } from "../errors.ts";
+import { authenticatedUserId } from "../middleware/require-auth.ts";
+import * as apiKeys from "../services/api-keys.ts";
 
-export const createApiKey: RequestHandler = (_req, _res) => {
-    throw new HttpError(501, "Not implemented");
+type ProjectParams = {
+    organizationId: string;
+    projectId: string;
 };
 
-export const listApiKeys: RequestHandler = (_req, _res) => {
-    throw new HttpError(501, "Not implemented");
+type ApiKeyParams = ProjectParams & {
+    apiKeyId: string;
 };
 
-export const revokeApiKey: RequestHandler = (_req, _res) => {
-    throw new HttpError(501, "Not implemented");
+const createApiKeySchema = z.object({
+    name: z.string().min(1),
+    type: z.enum(["INGEST", "READ"]),
+});
+
+export const createApiKey: RequestHandler<ProjectParams> = async (req, res) => {
+    const body = createApiKeySchema.parse(req.body);
+    const apiKey = await apiKeys.createApiKey(
+        authenticatedUserId(req),
+        req.params.organizationId,
+        req.params.projectId,
+        body,
+    );
+    res.status(201).json(apiKey);
+};
+
+export const listApiKeys: RequestHandler<ProjectParams> = async (req, res) => {
+    const list = await apiKeys.listApiKeys(
+        authenticatedUserId(req),
+        req.params.organizationId,
+        req.params.projectId,
+    );
+    res.status(200).json(list);
+};
+
+export const revokeApiKey: RequestHandler<ApiKeyParams> = async (req, res) => {
+    await apiKeys.revokeApiKey(
+        authenticatedUserId(req),
+        req.params.organizationId,
+        req.params.projectId,
+        req.params.apiKeyId,
+    );
+    res.status(204).send();
 };
