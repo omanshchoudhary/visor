@@ -2,6 +2,7 @@ import type { Request } from "express";
 
 export const UNMATCHED_ROUTE = "unmatched";
 
+// route template (/users/:id), not the live path (/users/42). unmatched requests share one bucket
 export function routeTemplate(req: Request): string {
     const route = req.route as { path?: string } | undefined;
 
