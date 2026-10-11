@@ -6,6 +6,7 @@ import { errorHandler, notFound } from "./middleware/error-handler.ts";
 import { requireAuth } from "./middleware/require-auth.ts";
 import { authRouter } from "./routes/auth.ts";
 import { healthHandler } from "./routes/health.ts";
+import { ingestRouter } from "./routes/ingest.ts";
 import { invitesRouter } from "./routes/invites.ts";
 import { organizationsRouter } from "./routes/organizations.ts";
 import { usersRouter } from "./routes/users.ts";
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 app.get("/health", healthHandler);
 app.use("/api/auth", authRouter);
+app.use("/api/ingest", ingestRouter); // sdk sends an ingest key
 app.use("/api/users", requireAuth, usersRouter);
 app.use("/api/orgs", requireAuth, organizationsRouter);
 app.use("/api/invites", requireAuth, invitesRouter);

@@ -50,3 +50,17 @@ export async function createProject(
 
     return (response.body as { id: string }).id;
 }
+
+export async function createApiKey(
+    account: Account,
+    organizationId: string,
+    projectId: string,
+    type: "INGEST" | "READ" = "INGEST",
+): Promise<{ id: string; key: string }> {
+    const response = await request(app)
+        .post(`/api/orgs/${organizationId}/projects/${projectId}/keys`)
+        .set("Authorization", `Bearer ${account.token}`)
+        .send({ name: `${type.toLowerCase()} key`, type });
+
+    return response.body as { id: string; key: string };
+}
