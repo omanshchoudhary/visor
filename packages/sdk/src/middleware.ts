@@ -4,14 +4,14 @@ import type { RequestEvent } from "@visorhq/contract";
 
 import { routeTemplate } from "./route.ts";
 
-export type RecordEvent = (event: RequestEvent) => void;
+type RecordEvent = (event: RequestEvent) => void;
 
 export type Clock = {
     wallClock: () => number;
     monotonic: () => bigint;
 };
 
-export type RequestMiddlewareOptions = {
+type RequestMiddlewareOptions = {
     record: RecordEvent;
     clock?: Clock;
 };

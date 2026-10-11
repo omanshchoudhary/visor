@@ -9,13 +9,13 @@ export type QueueOptions = {
     send: SendBatch;
 };
 
-export type QueueStats = {
+type QueueStats = {
     size: number; // events waiting right now
     dropped: number; // events thrown away to stay under capacity
     failed: number; // events lost because a send rejected
 };
 
-export type EventQueue = {
+type EventQueue = {
     add: (event: RequestEvent) => void;
     flush: () => Promise<void>;
     close: () => Promise<void>;
