@@ -6,10 +6,11 @@ import { createEventQueue, type QueueOptions } from "./queue.ts";
 
 function event(startedAt: number): RequestEvent {
     return {
+        id: `event-${String(startedAt)}`,
         route: "/users/:id",
         method: "GET",
         statusCode: 200,
-        durationMs: 1,
+        durationUs: 1000,
         startedAt,
     };
 }

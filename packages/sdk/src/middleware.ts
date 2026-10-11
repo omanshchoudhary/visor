@@ -2,6 +2,8 @@ import type { RequestHandler } from "express";
 
 import type { RequestEvent } from "@visorhq/contract";
 
+import { randomUUID } from "node:crypto";
+
 import { routeTemplate } from "./route.ts";
 
 type RecordEvent = (event: RequestEvent) => void;
@@ -37,11 +39,12 @@ export function createRequestMiddleware(options: RequestMiddlewareOptions): Requ
             const endMonotonic = clock.monotonic();
 
             options.record({
+                id: randomUUID(),
                 startedAt,
                 route: routeTemplate(req),
                 method: req.method,
                 statusCode: res.statusCode,
-                durationMs: Number(endMonotonic - startMonotonic) / 1e6,
+                durationUs: Math.round(Number(endMonotonic - startMonotonic) / 1000),
             });
         };
 

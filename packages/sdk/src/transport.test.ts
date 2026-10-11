@@ -5,7 +5,14 @@ import type { RequestEvent } from "@visorhq/contract";
 import { createTransport, type TransportOptions } from "./transport.ts";
 
 const events: RequestEvent[] = [
-    { route: "/users/:id", method: "GET", statusCode: 200, durationMs: 12.5, startedAt: 1 },
+    {
+        id: "event-1",
+        route: "/users/:id",
+        method: "GET",
+        statusCode: 200,
+        durationUs: 12500,
+        startedAt: 1,
+    },
 ];
 
 function response(status: number, headers: Record<string, string> = {}): Response {

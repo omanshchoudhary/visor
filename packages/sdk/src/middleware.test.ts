@@ -61,10 +61,11 @@ describe("createRequestMiddleware", () => {
 
         expect(events).toEqual([
             {
+                id: expect.any(String) as string,
                 route: "/users/:id",
                 method: "GET",
                 statusCode: 200,
-                durationMs: 12.5,
+                durationUs: 12500,
                 startedAt: STARTED_AT,
             },
         ]);
@@ -123,8 +124,8 @@ describe("createRequestMiddleware", () => {
             });
         }, "/health");
 
-        expect(events[0]?.durationMs).toBeGreaterThanOrEqual(0);
-        expect(Number.isFinite(events[0]?.durationMs)).toBe(true);
+        expect(events[0]?.durationUs).toBeGreaterThanOrEqual(0);
+        expect(Number.isFinite(events[0]?.durationUs)).toBe(true);
         expect(events[0]?.startedAt).toBeGreaterThan(1_600_000_000_000);
     });
 

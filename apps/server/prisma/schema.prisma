@@ -66,6 +66,7 @@ model Project {
   name           String
   organizationId String
   apiKeys        ApiKey[]
+  events         Event[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -114,6 +115,21 @@ model RefreshToken {
   session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId])
+}
+
+model Event {
+  id         String   @id
+  projectId  String
+  route      String
+  method     String
+  statusCode Int
+  durationUs Int
+  startedAt  DateTime @db.Timestamptz(3)
+  receivedAt DateTime @default(now()) @db.Timestamptz(3)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, startedAt])
 }
 
 enum Role {
