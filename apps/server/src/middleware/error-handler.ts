@@ -31,6 +31,9 @@ export const errorHandler: ErrorRequestHandler = (error: unknown, req, res, _nex
         return;
     }
     if (error instanceof HttpError) {
+        if (error.retryAfter !== undefined) {
+            res.set("Retry-After", String(error.retryAfter));
+        }
         res.status(error.status).json({ error: error.message });
         return;
     }
