@@ -2,6 +2,7 @@ import type { RequestEvent } from "@visorhq/contract";
 
 import { prisma } from "../db.ts";
 import { authenticateApiKey } from "./access.ts";
+import { ingestRateLimiter } from "./rate-limit.ts";
 
 export type IngestResult = {
     received: number; // events in the batch
@@ -19,6 +20,7 @@ function trustedStartedAt(startedAt: number, receivedAt: number): Date {
 
 export async function storeBatch(key: string, events: RequestEvent[]): Promise<IngestResult> {
     const { apiKeyId, projectId } = await authenticateApiKey(key, "INGEST");
+    ingestRateLimiter.consume(apiKeyId, events.length);
     const receivedAt = Date.now();
 
     const result = await prisma.event.createMany({

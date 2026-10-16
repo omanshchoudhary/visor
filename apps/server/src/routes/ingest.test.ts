@@ -185,6 +185,23 @@ describe("POST /api/ingest", () => {
         expect(response.status).toBe(400);
     });
 
+    it("refuses a key that outruns its rate limit", async () => {
+        const { key } = await setUpProject();
+        const batch = () =>
+            send(
+                key,
+                Array.from({ length: 100 }, () => event()),
+            );
+
+        await batch();
+        await batch();
+        const response = await batch();
+
+        expect(response.status).toBe(429);
+        expect(response.headers["retry-after"]).toBe("1");
+        expect(await prisma.event.count()).toBe(200);
+    });
+
     it("deletes events with the project", async () => {
         const { key, projectId } = await setUpProject();
         await send(key, [event()]);

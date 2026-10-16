@@ -6,6 +6,8 @@ const schema = z.object({
     DATABASE_URL: z.url(),
     AUTH_SECRET: z.string().min(32),
     APP_URL: z.url().default("http://localhost:5173"),
+    INGEST_EVENTS_PER_SECOND: z.coerce.number().int().positive().default(500),
+    INGEST_BURST: z.coerce.number().int().positive().default(2000),
 });
 
 const parsed = schema.safeParse(process.env);
