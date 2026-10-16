@@ -40,6 +40,25 @@ pnpm dev
 
 The server listens on `http://localhost:3000`, the full stack serves on `http://localhost:8080`, and Mailpit's inbox is on `http://localhost:8025`.
 
+## Ingest performance
+
+1,000 events/s for 5 minutes, server and Postgres on the same machine:
+
+| | |
+| --- | --- |
+| Events written | 300,000 of 300,000 sent |
+| Throughput | 999 events/s |
+| Batch latency | p50 42 ms, p90 90 ms, p99 125 ms |
+| Errors | 0 |
+
+Batches of 50 over 10 connections, measured with autocannon. Reproduce it against a running server:
+
+```bash
+pnpm --filter @visorhq/server loadtest --duration 300 --rate 1000 --batch 50
+```
+
+Ingest is rate limited per key, 500 events/s by default, so raise `INGEST_EVENTS_PER_SECOND` on the server before asking for more than that.
+
 ## Repository layout
 
 | Path | What it is |
