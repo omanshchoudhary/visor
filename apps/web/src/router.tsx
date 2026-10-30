@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
 import { App } from "./App.tsx";
+import { RequireAuth } from "./auth/require-auth.tsx";
 import { AppLayout } from "./layout.tsx";
 import { Login } from "./pages/login.tsx";
 import { NotFound } from "./pages/not-found.tsx";
@@ -9,10 +10,15 @@ import { RoutesPage } from "./pages/routes.tsx";
 
 export const router = createBrowserRouter([
     {
-        element: <AppLayout />,
+        element: <RequireAuth />,
         children: [
-            { path: "/", element: <App /> },
-            { path: "/routes", element: <RoutesPage /> },
+            {
+                element: <AppLayout />,
+                children: [
+                    { path: "/", element: <App /> },
+                    { path: "/routes", element: <RoutesPage /> },
+                ],
+            },
         ],
     },
     { path: "/login", element: <Login /> },
