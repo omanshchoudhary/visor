@@ -67,6 +67,7 @@ model Project {
   organizationId String
   apiKeys        ApiKey[]
   events         Event[]
+  routeMinutes   RouteMinute[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -130,6 +131,25 @@ model Event {
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId, startedAt])
+}
+
+model RouteMinute {
+  projectId  String
+  route      String
+  method     String
+  minute     DateTime @db.Timestamptz(3)
+
+  requests      Int
+  clientErrors  Int
+  serverErrors  Int
+  durationSumUs BigInt
+  durationMaxUs Int
+  latency       Int[] // counts per band of LATENCY_BANDS, last band is the overflow
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, route, method, minute])
+  @@index([projectId, minute])
 }
 
 enum Role {
